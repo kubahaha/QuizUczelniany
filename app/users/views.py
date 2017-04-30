@@ -32,3 +32,7 @@ def login_page(request):
     else:
         form = LoginForm()
         return render(request, "login.html", {'form': form})
+
+
+def logintest(request):
+    return render(request, "logintest.html")

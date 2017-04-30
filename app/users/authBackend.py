@@ -20,7 +20,7 @@ class UserModelUsernameEmailBacked(object):
         else:
             return None
 
-    def get_user_by_id(self, user_id):
+    def get_user(self, user_id):
         try:
             user = UserModel.objects.get(pk=user_id)
         except UserModel.DoesNotExist:

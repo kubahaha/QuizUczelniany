@@ -59,7 +59,10 @@ class User(AbstractBaseUser):
         },
     )
 
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(
+        _('date joined'),
+        default=timezone.now
+    )
 
     objects = UserManager()
 
