@@ -1,6 +1,6 @@
 {% block content %}
     <h1>Login!</h1>
-    <form method="POST" action="/guest/login/">
+    <form method="POST" action="{% url 'user:login' %}">
         {% csrf_token %}
         {{ login_form.as_p }}
         <button type="submit">Logme bejbe!</button>
@@ -8,7 +8,7 @@
     <br><br>
 
     <h1>Zarejestruj się!</h1>
-    <form method="POST" action="/guest/register/">
+    <form method="POST" action="{% url 'user:registration' %}">
         {% csrf_token %}
         {{ register_form.as_p }}
         <button type="submit">Registerme bejbe!</button>

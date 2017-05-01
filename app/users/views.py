@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .forms import *
 
 
 def welcome(request, register_form=None, login_form=None):
     if request.user.is_authenticated():
-        return redirect('user:logged')
+        return redirect('group:index')
 
     if register_form is None:
         register_form = RegistrationForm()
@@ -18,7 +18,7 @@ def welcome(request, register_form=None, login_form=None):
 
 def register(request):
     if request.user.is_authenticated():
-        return redirect('user:logged')
+        return redirect('group:index')
 
     if request.method == "POST":
         form = RegistrationForm(request.POST)
@@ -35,10 +35,10 @@ def register(request):
 
 def login_page(request):
     if request.user.is_authenticated():
-        return redirect('user:logged')
+        return redirect('group:index')
 
     if request.user.is_authenticated():
-        redirect('user:logged')
+        redirect('group:index')
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -47,12 +47,14 @@ def login_page(request):
             user = authenticate(login=form.cleaned_data['login'], password=form.cleaned_data['password'])
             login(request, user)
 
-            return redirect("user:logged")
+            return redirect('group:index')
 
         return welcome(request, login_form=form)
 
     return redirect('user:welcome')
 
 
-def logintest(request):
-    return render(request, "logintest.html")
+def logout_user(request):
+    logout(request)
+
+    return redirect('user:welcome')
