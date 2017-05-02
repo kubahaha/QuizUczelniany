@@ -8,13 +8,13 @@ class Group(models.Model):
     GROUP_STATUS = (
         (0, 'Otwarta'),
         (1, 'Zamknięta'),
-        (2, 'Tajna'),
+        # (2, 'Tajna'),
     )
 
     group_name_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
 
     group_name = models.CharField(
-        _('group name'),
+        _('Nazwa grupy'),
         max_length=150,
         unique=True,
         help_text=_('Maksymalna długość 150 znaków. Dozwolone są litery, cyfry i @/./+/-/_.'),
@@ -25,14 +25,19 @@ class Group(models.Model):
         },
     )
 
+    group_description = models.CharField(
+        _('Opis grupy'),
+        max_length=300
+    )
+
     group_status = models.IntegerField(
-        _('group status'),
+        _('Status grupy'),
         choices=GROUP_STATUS,
         default=0,
     )
 
     date_created = models.DateTimeField(
-        _('date created'),
+        _('Data utworzenia'),
         default=timezone.now,
     )
 
@@ -41,7 +46,7 @@ class Tag(models.Model):
     tag_name_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
 
     tag_name = models.CharField(
-        _('tag name'),
+        _('Nazwa tagu'),
         max_length=50,
         unique=True,
         help_text=_('Maksymalna długość 50 znaków. Dozwolone są litery, cyfry i @/./+/-/_.'),
@@ -86,7 +91,7 @@ class UserGroup(models.Model):
     )
 
     user_status = models.IntegerField(
-        _('user status'),
+        _('Status użytkownika'),
         choices=USER_STATUS,
         default=0,
     )
