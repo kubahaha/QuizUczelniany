@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}Welcome '{{ request.user.email }}' {{ request.user.username }}{% endif %}
+<br>
+
+<form method="POST" action="{% url 'user:logout' %}">
+    {% csrf_token %}
+    <button type="submit">Wyloguj!</button>
+</form>
+
+<br>
+
+<form method="POST" action="{% url 'group:add_group' %}">
+    {% csrf_token %}
+    <button type="submit">Dodaj grupe!</button>
+</form>
+
+<br>
+<h1>Lista grup:</h1>
+<br>
+{% for group in groups %}
+    {{ group.group_name }} {{ group.group_status }}
+{% endfor %}
+</body>
+</html>
