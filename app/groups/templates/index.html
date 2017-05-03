@@ -23,8 +23,14 @@
 <br>
 <h1>Lista grup:</h1>
 <br>
-{% for group in groups %}
-    {{ group.group_name }} {{ group.group_status }}
+{% for key, group in groups_with_tags.items %}
+    Nazwa: {{ group.Group.group_name }} {{ group.Group.group_status }}
+    <br>
+    {% for tag in group.Tags %}
+        tag: {{ tag.tag_name }}
+    <br>
+    {% endfor %}
+    <br>
 {% endfor %}
 </body>
 </html>

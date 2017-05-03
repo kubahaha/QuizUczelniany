@@ -3,11 +3,17 @@ from django.shortcuts import render
 from .forms import *
 from .models import *
 
-
 def index(request):
-    groups = Group.objects.all().exclude()
+    groups = Group.objects.all()
+    groups_with_tags = {}
+    count = 0
+    for group in groups:
+        group_id = group.id
+        tags = Tag.objects.raw("SELECT T.id, tag_name FROM groups_tag AS T JOIN groups_grouptag AS GT on T.id = GT.tag_id WHERE GT.group_id = %s", [group_id])
+        groups_with_tags[count] = {"Group": group, "Tags": tags}
+        count = count + 1
 
-    return render(request, "index.html", {'groups': groups})
+    return render(request, "index.html", {'groups_with_tags': groups_with_tags})
 
 
 def add_group(request):
