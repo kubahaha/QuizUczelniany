@@ -102,3 +102,27 @@ class UserGroup(models.Model):
 
     class Meta:
         unique_together = ('group', 'user',)
+
+
+# TODO: order by
+def associate_tags_with_given_groups(group=None):
+    """
+    Gets valid Group instance or none,
+    If Group is None then gets all existing groups
+    Returns dict: {#id0: {'Group': GroupObject, 'Tags': TagObjectSet}, #id1: ... }, #id is order number
+    """
+    if group is None:
+        # get all groups
+        groups = Group.objects.all()
+
+    groups_with_tags = {}
+    count = 0
+    for group in groups:
+        group_id = group.id  # TODO: cursor.fetchall()/dictfetchall(cursor) ?
+        tags = Tag.objects.raw(
+            "SELECT T.id, tag_name FROM groups_tag AS T JOIN groups_grouptag AS GT ON T.id = GT.tag_id WHERE GT.group_id = %s",
+            [group_id])
+        groups_with_tags[count] = {"Group": group, "Tags": tags}
+        count = count + 1
+
+    return groups_with_tags
