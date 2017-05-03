@@ -4,6 +4,14 @@ from django.utils import six, timezone
 from django.utils.translation import ugettext_lazy as _
 
 
+class GroupNameValidator(UnicodeUsernameValidator):
+    """
+    Just overwritten UsernameValidator regexp, now it allows for spaces
+    Spaces can't be put at the beginning and at the end nor more than one in a row
+    """
+    regex = r'^[.\w.@+-]+[[ .]{1}[\w.@+-]+]*$'
+
+
 class Group(models.Model):
     GROUP_STATUS = (
         (0, 'Otwarta'),
@@ -11,13 +19,14 @@ class Group(models.Model):
         # (2, 'Tajna'),
     )
 
-    group_name_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
+    group_name_validator = GroupNameValidator()
 
     group_name = models.CharField(
         _('Nazwa grupy'),
         max_length=150,
         unique=True,
-        help_text=_('Maksymalna długość 150 znaków. Dozwolone są litery, cyfry i @/./+/-/_.'),
+        help_text=_('Maksymalna długość 150 znaków. Dozwolone są litery, cyfry, spacje i @/./+/-/_.'
+                    'Spacje nie mogą być na początku u na końcu nazwy, oraz nie może być więcej niż jedna pod rząd'),
         validators=[group_name_validator],
         error_messages={
             'unique': _("Grupa o takiej nazwie już istnieje"),
