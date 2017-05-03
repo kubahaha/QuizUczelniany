@@ -17,6 +17,7 @@ def add_group(request):
     if group_form.is_valid() and tag_form.is_valid():
         with transaction.atomic():
             group = group_form.save()
+            UserGroup.objects.create(user=request.user, group=group, user_status=2, is_member=True)
             tags = tag_form.save()
 
             for tag in tags:
