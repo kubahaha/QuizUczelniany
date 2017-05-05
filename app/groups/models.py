@@ -147,7 +147,11 @@ def get_groups_which_have_given_tags_name_descript(tags, q_search):
     q_search = '%' + q_search + '%'
 
     groups = Group.objects.raw(
-        "SELECT DISTINCT ON (G.group_name) G.* FROM groups_group as G LEFT OUTER JOIN groups_grouptag as GT on G.id = GT.group_id LEFT OUTER JOIN groups_tag as T on T.id = GT.tag_id WHERE T.tag_name = ANY(%s) AND (G.group_name LIKE %s OR G.group_description LIKE %s)",
+        '''SELECT DISTINCT ON (G.group_name) G.* FROM groups_group as G
+            LEFT OUTER JOIN groups_grouptag as GT on G.id = GT.group_id
+            LEFT OUTER JOIN groups_tag as T on T.id = GT.tag_id
+              WHERE T.tag_name = ANY(%s)
+                AND (G.group_name LIKE %s OR G.group_description LIKE %s)''',
         [tags, q_search, q_search]
     )
 
