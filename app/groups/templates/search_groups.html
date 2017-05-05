@@ -1,32 +1,20 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Search Groups!</title>
 </head>
 <body>
-{% if request.user.is_authenticated %}Welcome '{{ request.user.email }}' {{ request.user.username }}{% endif %}
-<br>
-
-<form method="POST" action="{% url 'user:logout' %}">
-    {% csrf_token %}
-    <button type="submit">Wyloguj!</button>
-</form>
-
-<br>
-
 <form method="GET" action="{% url 'group:search_groups' %}">
     <input type="text" name="q">
     <button type="submit">Szukaj!</button>
 </form>
-
 <br>
-
-<form method="POST" action="{% url 'group:add_group' %}">
-    {% csrf_token %}
-    <button type="submit">Dodaj grupe!</button>
-</form>
-
+TAGI:
+<br>
+{% for tag in tags %}
+    <b>{{ tag.tag_name }} </b>  ||
+{% endfor %}
 <br>
 <h1>Lista grup:</h1>
 <br>

@@ -114,13 +114,13 @@ class UserGroup(models.Model):
 
 
 # TODO: order by
-def associate_tags_with_given_groups(group=None):
+def associate_tags_with_given_groups(groups=None, tag_list=None):
     """
     Gets valid Group instance or none,
     If Group is None then gets all existing groups
     Returns dict: {#id0: {'Group': GroupObject, 'Tags': TagObjectSet}, #id1: ... }, #id is order number
     """
-    if group is None:
+    if groups is None:
         # get all groups
         groups = Group.objects.all()
 
@@ -135,3 +135,20 @@ def associate_tags_with_given_groups(group=None):
         count = count + 1
 
     return groups_with_tags
+
+
+def get_groups_which_have_given_tags_name_descript(tags, q_search):
+    if tags is None:
+        raise Exception('tags must be array!')
+
+    if q_search is None:
+        q_search = ''
+
+    q_search = '%' + q_search + '%'
+
+    groups = Group.objects.raw(
+        "SELECT DISTINCT ON (G.group_name) G.* FROM groups_group as G LEFT OUTER JOIN groups_grouptag as GT on G.id = GT.group_id LEFT OUTER JOIN groups_tag as T on T.id = GT.tag_id WHERE T.tag_name = ANY(%s) AND (G.group_name LIKE %s OR G.group_description LIKE %s)",
+        [tags, q_search, q_search]
+    )
+
+    return groups
