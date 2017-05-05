@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj grupe!</title>
+</head>
+<body>
+<form method="POST" action="{% url 'group:add_group' %}">
+    {% csrf_token %}
+    {{ add_group_form.as_p }}
+    {{ tag_form.as_p }}
+    <button type="submit">Dodaj grupe!</button>
+</form>
+</body>
+</html>

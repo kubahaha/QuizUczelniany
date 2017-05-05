@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}Welcome '{{ request.user.email }}' {{ request.user.username }}{% endif %}
+<br>
+
+<form method="POST" action="{% url 'user:logout' %}">
+    {% csrf_token %}
+    <button type="submit">Wyloguj!</button>
+</form>
+
+<br>
+
+<form method="GET" action="{% url 'group:search_groups' %}">
+    <input type="text" name="q">
+    <button type="submit">Szukaj!</button>
+</form>
+
+<br>
+
+<form method="POST" action="{% url 'group:add_group' %}">
+    {% csrf_token %}
+    <button type="submit">Dodaj grupe!</button>
+</form>
+
+<br>
+<h1>Lista grup:</h1>
+<br>
+{% for key, group in groups_with_tags.items %}
+    Nazwa: {{ group.Group.group_name }} {{ group.Group.group_status }}
+    <br>
+    Opis: {{ group.Group.group_description }}
+    <br>
+    {% for tag in group.Tags %}
+        tag: {{ tag.tag_name }}
+    <br>
+    {% endfor %}
+    <br>
+{% endfor %}
+</body>
+</html>
