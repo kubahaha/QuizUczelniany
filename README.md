@@ -1,6 +1,6 @@
 # Działa:
 
-* Logowanie
+* Logowanie/wylogowywanie
 
 * Rejestracja nowego użytkownika, walidacja
 
@@ -9,3 +9,5 @@
 * Dodawanie grup (Nazwa, opis) wraz z tagami, walidacja
 
 * Szukajka grup - po nazwie/opisie i tagach
+
+* Zmiana hasła i emaila użytkownika
