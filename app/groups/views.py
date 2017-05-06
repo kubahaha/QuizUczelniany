@@ -1,9 +1,9 @@
 from django.db import transaction
 from django.shortcuts import render, redirect
-from django.http import Http404
 from .forms import *
 from .models import *
 from django.db.models import Q
+
 
 def index(request):
     groups_with_tags = associate_tags_with_given_groups()
@@ -37,6 +37,7 @@ def search_groups(request):  # TODO via POST method
     request_tag_list = list(v for k, v in request.GET.items() if k[0] == 't' and len(k) == 2 and k[1].isdigit())
 
     groups_with_tags = {}
+    tag_list = {}
 
     if request.method == "GET":
         search_query = request.GET.get('q')
@@ -57,9 +58,8 @@ def search_groups(request):  # TODO via POST method
     return render(request, "search_groups.html", {'groups_with_tags': groups_with_tags, 'tags': tag_list})
 
 
+# TODO add to context questions etc
 def enter_into_group(request, group_id):
-    group_exists_or_404(group_id)
-
     group = Group.objects.filter(id=group_id).first()
     group_with_tags = associate_tags_with_given_groups([group])[0]
     print(group_with_tags)
@@ -70,13 +70,34 @@ def enter_into_group(request, group_id):
         return render(request, 'not_a_member.html',
                       {'group_with_tags': group_with_tags, 'user_group_details': user_group_details})
 
-##########
-# UTILS
-##########
+    if user_group_details['is_member']:
+        return render(request, 'group_index.html',
+                      {'group_with_tags': group_with_tags, 'user_group_details': user_group_details})
 
 
-def group_exists_or_404(group_id):
+def become_member(request, group_id):
+    # user is already member of this group or request is not POST
+    if request.method != "POST" or is_user_group_member(request.user.id, group_id):
+        return redirect('group:go_to_group', group_id)
+
+    # user is not member of this group
     group = Group.objects.filter(id=group_id).first()
+    group_status = group.group_status
 
-    if group is None:
-        raise Http404
+    if group_status == 0:  # group is open
+        UserGroup.objects.create(user=request.user, group=group, user_status=0, is_member=True)
+    else:  # group is closed
+        UserGroup.objects.create(user=request.user, group=group, user_status=0, is_member=False)
+
+    return redirect('group:go_to_group', group_id)
+
+
+def group_admin(request):  # TODO
+    pass
+
+
+########
+# UTILS
+########
+def is_user_group_member(user_id, group_id):
+    return UserGroup.objects.filter(user_id=user_id, group_id=group_id).exists()

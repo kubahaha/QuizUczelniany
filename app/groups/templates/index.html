@@ -41,6 +41,10 @@
         tag: {{ tag.tag_name }}
     <br>
     {% endfor %}
+
+    <a href="{% url 'group:go_to_group' group.Group.id %}">Wejdź!</a>
+
+    <br>
     <br>
 {% endfor %}
 </body>

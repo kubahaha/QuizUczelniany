@@ -15,10 +15,14 @@
     {% if not user_group_details.is_in_group %}
         Nie jesteś jeszcze członkiem!
 
-        Dołącz! <- TODO
+        <form method="POST" action="{% url 'group:become_member' group_with_tags.Group.id %}">
+            {% csrf_token %}
+            <button type="submit">Dołącz!</button>
+        </form>
 
     {% else %}
         {% if group_with_tags.Group.group_status == 1 and not user_group_details.is_member %}
+            <br>
             Nie zostałeś jeszcze dodany przez administratora!
         {% endif %}
     {% endif %}

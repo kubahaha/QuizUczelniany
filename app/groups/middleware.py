@@ -22,7 +22,6 @@ class GroupExistsOr404Middleware(object):
         split_request = request.path.split('/', 3)
 
         if split_request[1] == 'group' and len(split_request) >= 3:
-            print("test")
             try:
                 group_id = int(split_request[2])
             except ValueError:
