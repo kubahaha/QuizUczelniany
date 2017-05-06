@@ -1,5 +1,6 @@
 from django.db import transaction
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import Http404
 from .forms import *
 from .models import *
 from django.db.models import Q
@@ -54,3 +55,26 @@ def search_groups(request):  # TODO via POST method
         tag_list = Tag.objects.all()
 
     return render(request, "search_groups.html", {'groups_with_tags': groups_with_tags, 'tags': tag_list})
+
+
+def enter_into_group(request, group_id):
+    group_exists_or_404(group_id)
+
+    group = Group.objects.filter(id=group_id).first()
+    group_with_tags = associate_tags_with_given_groups([group])[0]
+    print(group_with_tags)
+    user_group_details = get_user_group_details(request.user.id, group_id)
+    print(user_group_details)
+
+    if not user_group_details['is_in_group'] or not user_group_details['is_member']:
+        return render(request, 'not_a_member.html',
+                      {'group_with_tags': group_with_tags, 'user_group_details': user_group_details})
+
+##########
+# UTILS
+##########
+def group_exists_or_404(group_id):
+    group = Group.objects.filter(id=group_id).first()
+
+    if group is None:
+        raise Http404
