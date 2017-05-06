@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Groups!</title>
+</head>
+<body>
+<form method="GET" action="{% url 'group:search_groups' %}">
+    <input type="text" name="q">
+    <button type="submit">Szukaj!</button>
+</form>
+<br>
+TAGI:
+<br>
+{% for tag in tags %}
+    <b>{{ tag.tag_name }} </b>  ||
+{% endfor %}
+<br>
+<h1>Lista grup:</h1>
+<br>
+{% for key, group in groups_with_tags.items %}
+    Nazwa: {{ group.Group.group_name }} {{ group.Group.group_status }}
+    <br>
+    Opis: {{ group.Group.group_description }}
+    <br>
+    {% for tag in group.Tags %}
+        tag: {{ tag.tag_name }}
+    <br>
+    {% endfor %}
+    <br>
+{% endfor %}
+</body>
+</html>

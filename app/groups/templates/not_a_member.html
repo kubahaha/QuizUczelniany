@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Not a member</title>
+</head>
+<body>
+    {{ group_with_tags.Group.group_name }} {{ group_with_tags.Group.group_status }}
+
+    {% for tag in group_with_tags.Tags %}
+        tag: {{ tag.tag_name }}
+    <br>
+    {% endfor %}
+
+    {% if not user_group_details.is_in_group %}
+        Nie jesteś jeszcze członkiem!
+
+        Dołącz! <- TODO
+
+    {% else %}
+        {% if group_with_tags.Group.group_status == 1 and not user_group_details.is_member %}
+            Nie zostałeś jeszcze dodany przez administratora!
+        {% endif %}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if group_with_tags.Group.group_status == 0 %}
+        LISTA PYTAN i Quizow
+    {% endif %}
+</body>
+</html>
