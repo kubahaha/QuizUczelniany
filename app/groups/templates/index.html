@@ -33,6 +33,8 @@
 {% for key, group in groups_with_tags.items %}
     Nazwa: {{ group.Group.group_name }} {{ group.Group.group_status }}
     <br>
+    Id: {{ group.Group.id }}
+    <br>
     Opis: {{ group.Group.group_description }}
     <br>
     {% for tag in group.Tags %}
