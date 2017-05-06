@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>settings</title>
+</head>
+<body>
+    '{{ request.user.email }}' {{ request.user.username }}
+
+    <br>
+    {{ context }}
+    <br>
+
+    <h1>Zmień hasło się!</h1>
+    <form method="POST" action="{% url 'user:user_change_password' %}">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit">Zmień hasło!</button>
+    </form>
+
+    <br>
+    <br>
+
+    <h1>Zmień email!</h1>
+    <form method="POST" action="{% url 'user:user_change_mail' %}">
+        {% csrf_token %}
+        {{ email_form.as_p }}
+        <button type="submit">Zmień email!</button>
+    </form>
+</body>
+</html>
