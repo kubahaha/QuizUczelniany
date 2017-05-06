@@ -9,7 +9,7 @@ class GroupNameValidator(UnicodeUsernameValidator):
     Just overwritten UsernameValidator regexp, now it allows for spaces
     Spaces can't be put at the beginning and at the end nor more than one in a row
     """
-    regex = r'^[.\w.@+-]+[[ .]{1}[\w.@+-]+]*$'
+    regex = r'^[.\w.@+-]+([ .]{1}[\w.@+-]+)*$'
 
 
 class Group(models.Model):
@@ -156,3 +156,21 @@ def get_groups_which_have_given_tags_name_descript(tags, q_search):
     )
 
     return groups
+
+
+def get_user_group_details(user_id, group_id):
+    return_dict = {}
+
+    user_details = UserGroup.objects.filter(user_id=user_id, group_id=group_id).first()
+
+    if user_details is None:
+        # if user is not in this group
+        return_dict['is_in_group'] = False
+        return return_dict
+
+    return_dict['is_in_group'] = True
+    return_dict['is_member'] = user_details.is_member
+    return_dict['user_status'] = user_details.user_status
+
+    return return_dict
+
