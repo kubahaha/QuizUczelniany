@@ -73,6 +73,8 @@ def enter_into_group(request, group_id):
 ##########
 # UTILS
 ##########
+
+
 def group_exists_or_404(group_id):
     group = Group.objects.filter(id=group_id).first()
 
