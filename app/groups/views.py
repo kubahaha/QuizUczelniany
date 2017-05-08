@@ -32,7 +32,7 @@ def add_group(request):
                    'tag_form': tag_form})
 
 
-def search_groups(request):  # TODO via POST method
+def search_groups(request):
     # gets all search tag names only from input fields starts with 't' and ends with digit (max 10)
     request_tag_list = list(v for k, v in request.GET.items() if k[0] == 't' and len(k) == 2 and k[1].isdigit())
 
@@ -62,9 +62,7 @@ def search_groups(request):  # TODO via POST method
 def enter_into_group(request, group_id):
     group = Group.objects.filter(id=group_id).first()
     group_with_tags = associate_tags_with_given_groups([group])[0]
-    print(group_with_tags)
     user_group_details = get_user_group_details(request.user.id, group_id)
-    print(user_group_details)
 
     if not user_group_details['is_in_group'] or not user_group_details['is_member']:
         return render(request, 'not_a_member.html',
@@ -92,8 +90,28 @@ def become_member(request, group_id):
     return redirect('group:go_to_group', group_id)
 
 
-def group_admin(request):  # TODO
-    pass
+def group_admin(request, group_id):  # TODO questions and quizzes
+    """
+    If user is not a member or is a normal user then redirect to group index
+    else returns user_group_details, group_with_tags, group_members
+    VIEW HAVE TO manage which content display admin and super admin
+    """
+    user_group_details = get_user_group_details(request.user.id, group_id)
+
+    if not user_group_details['is_in_group'] or user_group_details['user_status'] == 0:
+        # if is not a member or is a normal member
+        return redirect('group:go_to_group', group_id)
+
+    group = Group.objects.filter(id=group_id).first()
+    group_with_tags = associate_tags_with_given_groups([group])[0]
+
+    group_members = get_group_member(group_id)
+    print(group_members)
+    context = {'group_with_tags': group_with_tags,
+               'user_group_details': user_group_details,
+               'group_members': group_members}
+
+    return render(request, "group_admin_panel.html", context=context)
 
 
 ########
@@ -101,3 +119,12 @@ def group_admin(request):  # TODO
 ########
 def is_user_group_member(user_id, group_id):
     return UserGroup.objects.filter(user_id=user_id, group_id=group_id).exists()
+
+
+def get_user_role(user_id, group_id):
+    user = UserGroup.objects.filter(user_id=user_id, group_id=group_id, is_member=True).first()
+
+    if user is None:
+        return None
+
+    return user.user_status

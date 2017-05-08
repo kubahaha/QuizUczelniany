@@ -113,6 +113,10 @@ class UserGroup(models.Model):
         unique_together = ('group', 'user',)
 
 
+########
+# UTILS
+########
+
 # TODO: order by
 def associate_tags_with_given_groups(groups=None, tag_list=None):
     """
@@ -174,3 +178,6 @@ def get_user_group_details(user_id, group_id):
 
     return return_dict
 
+
+def get_group_member(group_id):
+    return UserGroup.objects.filter(group_id=group_id).select_related('user')
