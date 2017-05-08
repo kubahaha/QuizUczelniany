@@ -22,6 +22,7 @@
 
 * Mechanizm dołączania
 
+* Przeglądanie członków grupy w panelu (super)administratora
 
 ## TODO:
 
@@ -39,17 +40,17 @@
 
 * Panel administratora
 
-  - (_grupa zamknięta_) Przeglądanie listy niezatwierdzonych użytkowników
+  - usuwanie członków 
   
-  - (_grupa zamknięta_) Przeglądanie listy członków grupy, usuwanie ich, nadawanie praw
+  - (_grupa zamknięta_) zatwierdzanie członkostwa
   
   - Przeglądanie niezatwierdzonych pytań, zatwierdzanie ich
   
   - Przeglądanie niezatwierdzonych quizów, zatwierdzanie ich
 
 * Panel super administratora
-
-  - przeglądanie super administratów i administratorów, zmienianie im praw
+  
+  - zmienianie im praw członków grupy
   
   - zmienianie tagów i opisu grupy
   
