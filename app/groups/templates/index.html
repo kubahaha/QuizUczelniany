@@ -22,10 +22,12 @@
 
 <br>
 
-<form method="POST" action="{% url 'group:add_group' %}">
-    {% csrf_token %}
-    <button type="submit">Dodaj grupe!</button>
-</form>
+{#<form method="POST" action="{% url 'group:add_group' %}">#}
+{#    {% csrf_token %}#}
+{#    <button type="submit">Dodaj grupe!</button>#}
+{#</form>#}
+
+<a href="{% url 'group:add_group' %}">Dodaj grupe!</a>
 
 <br>
 <h1>Lista grup:</h1>
