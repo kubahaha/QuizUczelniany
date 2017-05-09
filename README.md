@@ -12,6 +12,8 @@
 
 * Autentykacja użytkownika (niezalogowany ma dostep tylko do _/guest/*_ )
 
+* Przeglądanie do jakich grup jest zapisany
+
 #### Grupy:
 
 * Dodawanie grup (Nazwa, opis) wraz z tagami, walidacja
@@ -29,8 +31,6 @@
 #### Użytkownik:
 
 * Statystyki rozwiązywania quzów z poszczególnych grup
-
-* Przeglądanie do jakich grup jest zapisany
 
 * Przeszukiwanie grup do jakich jest zapisany
 
