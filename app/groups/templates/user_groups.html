@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twoje grupy</title>
+</head>
+<body>
+
+Twoje grupu:
+<br>
+<br>
+{% for key, group in user_group_details.items %}
+    Nazwa: {{ group.Group.group_name }} {{ group.Group.group_status }}
+    <br>
+    Id: {{ group.Group.id }}
+    <br>
+    Opis: {{ group.Group.group_description }}
+    <br>
+    {% for tag in group.Tags %}
+        tag: {{ tag.tag_name }}
+    <br>
+    {% endfor %}
+
+    <a href="{% url 'group:go_to_group' group.Group.id %}">Wejdź!</a>
+
+    <br>
+    <br>
+{% endfor %}
+
+</body>
+</html>
