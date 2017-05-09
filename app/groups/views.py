@@ -106,13 +106,19 @@ def group_admin(request, group_id):  # TODO questions and quizzes
     group_with_tags = associate_tags_with_given_groups([group])[0]
 
     group_members = get_group_member(group_id)
-    print(group_members)
+    
     context = {'group_with_tags': group_with_tags,
                'user_group_details': user_group_details,
                'group_members': group_members}
 
     return render(request, "group_admin_panel.html", context=context)
 
+
+def user_dashboard_group(request):
+    user_group = Group.objects.filter(usergroup__user_id=request.user.id)
+    user_group_details = associate_tags_with_given_groups(user_group)
+
+    return render(request, "user_groups.html", {'user_group_details': user_group_details})
 
 ########
 # UTILS
