@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 from django.utils import six, timezone
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Q
 
 
 class GroupNameValidator(UnicodeUsernameValidator):
@@ -141,23 +142,35 @@ def associate_tags_with_given_groups(groups=None, tag_list=None):
     return groups_with_tags
 
 
-def get_groups_which_have_given_tags_name_descript(tags, q_search):
+def get_groups_which_have_given_tags_name_descript(tags, q_search, user_id=None):
     if tags is None:
         raise Exception('tags must be array!')
 
     if q_search is None:
         q_search = ''
 
-    q_search = '%' + q_search + '%'
+    if user_id is None:
+        groups = Group.objects.filter(
+            Q(group_name__contains=q_search) | Q(group_description__contains=q_search),
+            Q(grouptag__tag__tag_name__in=tags)
+        )
+    else:
+        groups = Group.objects.filter(
+            Q(group_name__contains=q_search) | Q(group_description__contains=q_search),
+            Q(grouptag__tag__tag_name__in=tags),
+            Q(usergroup__user_id=user_id)
+        )
 
-    groups = Group.objects.raw(
-        '''SELECT DISTINCT ON (G.group_name) G.* FROM groups_group as G
-            LEFT OUTER JOIN groups_grouptag as GT on G.id = GT.group_id
-            LEFT OUTER JOIN groups_tag as T on T.id = GT.tag_id
-              WHERE T.tag_name = ANY(%s)
-                AND (G.group_name LIKE %s OR G.group_description LIKE %s)''',
-        [tags, q_search, q_search]
-    )
+    # q_search = '%' + q_search + '%'
+    #
+    # groups = Group.objects.raw(
+    #     '''SELECT DISTINCT ON (G.group_name) G.* FROM groups_group as G
+    #         LEFT OUTER JOIN groups_grouptag as GT on G.id = GT.group_id
+    #         LEFT OUTER JOIN groups_tag as T on T.id = GT.tag_id
+    #           WHERE T.tag_name = ANY(%s)
+    #             AND (G.group_name LIKE %s OR G.group_description LIKE %s)''',
+    #     [tags, q_search, q_search]
+    # )
 
     return groups
 

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^group/(?P<group_id>[0-9]+)/becomemember/$', views.become_member, name="become_member"),
     url(r'^group/(?P<group_id>[0-9]+)/administration/$', views.group_admin, name="group_administration"),
     url(r'^dashboard/$', views.user_dashboard_group, name="user_dashboard_group"),
+    url(r'^dashboard/search/$', views.user_dashboard_group_search, name="user_dashboard_group_search"),
 ]

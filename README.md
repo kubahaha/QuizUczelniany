@@ -14,6 +14,8 @@
 
 * Przeglądanie do jakich grup jest zapisany
 
+* Przeszukiwanie grup do jakich jest zapisany
+
 #### Grupy:
 
 * Dodawanie grup (Nazwa, opis) wraz z tagami, walidacja
@@ -31,8 +33,6 @@
 #### Użytkownik:
 
 * Statystyki rozwiązywania quzów z poszczególnych grup
-
-* Przeszukiwanie grup do jakich jest zapisany
 
 * ...
 
@@ -53,6 +53,8 @@
   - zmienianie im praw członków grupy
   
   - zmienianie tagów i opisu grupy
+
+  - usuwanie grupy
   
 * ...
   
