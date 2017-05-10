@@ -33,8 +33,7 @@ def add_group(request):
 
 
 def search_groups(request):
-    # gets all search tag names only from input fields starts with 't' and ends with digit (max 10)
-    request_tag_list = list(v for k, v in request.GET.items() if k[0] == 't' and len(k) == 2 and k[1].isdigit())
+    request_tag_list = get_searching_tags(request.GET)
 
     groups_with_tags = {}
     tag_list = {}
@@ -120,6 +119,35 @@ def user_dashboard_group(request):
 
     return render(request, "user_groups.html", {'user_group_details': user_group_details})
 
+
+def user_dashboard_group_search(request):
+    request_tag_list = get_searching_tags(request.GET)
+
+    user_group_details = {}
+    tag_list = {}
+
+    if request.method == "GET":
+        search_query = request.GET.get('q')
+        # no searching
+        if (search_query == '' or search_query is None) and not request_tag_list:
+            user_group = Group.objects.filter(usergroup__user_id=request.user.id)
+            user_group_details = associate_tags_with_given_groups(user_group)
+        # searching without selected tags
+        elif search_query != '' and not request_tag_list:
+            user_group = Group.objects.filter(
+                Q(usergroup__user_id=request.user.id),
+                Q(group_name__contains=search_query) | Q(group_description__contains=search_query))
+            user_group_details = associate_tags_with_given_groups(groups=user_group)
+        # searching with tags and with or without q
+        else:
+            user_group = get_groups_which_have_given_tags_name_descript(request_tag_list, search_query, user_id=request.user.id)
+            user_group_details = associate_tags_with_given_groups(groups=user_group)
+
+        tag_list = Tag.objects.filter()
+
+    return render(request, "search_groups.html", {'groups_with_tags': user_group_details, 'tags': tag_list})
+
+
 ########
 # UTILS
 ########
@@ -134,3 +162,11 @@ def get_user_role(user_id, group_id):
         return None
 
     return user.user_status
+
+
+def get_searching_tags(request_method):
+    """
+    Returns all search tag names only from input fields starts with 't' and ends with digit (max 10)
+    Gets request method - e.g. request.POST or request.GET
+    """
+    return list(v for k, v in request_method.items() if k[0] == 't' and len(k) == 2 and k[1].isdigit())
