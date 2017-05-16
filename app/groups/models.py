@@ -11,7 +11,7 @@ class GroupNameValidator(UnicodeUsernameValidator):
     Just overwritten UsernameValidator regexp, now it allows for spaces
     Spaces can't be put at the beginning and at the end nor more than one in a row
     """
-    regex = r'^[.\w.@+-]+([ .]{1}[\w.@+-]+)*$'
+    regex = r'^[\w.@+-]+([ .]{1}[\w.@+-]+)*$'
 
 
 class Group(models.Model):
