@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth import authenticate
@@ -37,10 +38,9 @@ class RegistrationForm(ModelForm):
 
         return user
 
-
 class LoginForm(forms.Form):
-    login = forms.Field(label='login', widget=forms.TextInput)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    login = forms.Field(widget=forms.TextInput)
+    password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -53,6 +53,7 @@ class LoginForm(forms.Form):
             raise forms.ValidationError("Niepoprawne dane logowania")
 
         return cleaned_data
+
 
 
 class ChangeUserPasswordForm(forms.Form):

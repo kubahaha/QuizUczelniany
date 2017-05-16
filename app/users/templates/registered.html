@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>udalo sie</title>
-</head>
-<body>
-    Konto zalozone! teraz mozesz sie zalogowac!
+{% extends 'base.html' %}
+{% block title %}Zarejestrowano{% endblock %}
+{% block title2 %}Zarejestrowano{% endblock %}
 
-    {% block content %}
-        <h1>Login!</h1>
-        <form method="POST" action="/">
-            {% csrf_token %}
-            <button type="submit">Przejdź do logowania!</button>
-        </form>
-        <br><br>
-    {% endblock %}
-</body>
-</html>
+{% block body %}
+<main class="mdl-layout__content">
+	<div class="page-content center-cards">
+		<div class="mdl-card mdl-shadow--8dp group-card" style="margin:20px auto;">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">Zarejestrowano poprawnie</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				Konto zostało założone. Zaloguj się aby kontynuować
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href='/'>
+					Zaloguj się
+				</a>
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock %}

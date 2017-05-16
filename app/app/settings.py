@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -95,11 +96,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'QuizUczelniany',
-        'USER': 'QuizUczelniany',
-        'PASSWORD': '123',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': 'quiz',
+        'USER': 'quiz-app',
+        'PASSWORD': 'n8WteVS7qZRcwtyb',
+        'HOST': '185.164.138.19',
+        'PORT': '19910',
     }
 }
 
