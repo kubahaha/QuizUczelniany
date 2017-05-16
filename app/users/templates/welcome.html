@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Zaloguj się lub załóż konto{% endblock %}
+{% block title2 %}Zaloguj się{% endblock %}
+{% load widget_tweaks %}
+{% block body %}
+<main class="mdl-layout__content">
+	<div class="page-content">
+		<div class="mdl-grid">
+			<div class="mdl-cell mdl-cell--2-offset-desktop mdl-cell--4-col">
+				<h3>Zaloguj się do swojego konta</h3>
+				<form method="POST" action="{% url 'user:login' %}">
+					{% csrf_token %}
+					{{ login_form.errors }}
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ login_form.login|add_class:"mdl-textfield__input" }}
+						<label class="mdl-textfield__label" for="{{ login_form.login.id_for_label }}">Login...</label>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ login_form.password|add_class:"mdl-textfield__input" }}
+						<label class="mdl-textfield__label" for="{{ login_form.password.id_for_label }}">Hasło...</label>
+					</div>
+					<br>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" onclick='window.location="./logged.html"'>
+					Zaloguj
+					</button>
+				</form>
+			</div>
+			<div class="mdl-cell mdl-cell--2-offset-desktop mdl-cell--4-col">
+				<h2>Quiz</h2>
+				<span>
+				Aplikacja wspomagająca naukę do egzaminów, ....
+				</span>
+			</div>
+			<div class="mdl-cell mdl-cell--2-offset-desktop mdl-cell--4-col">
+				<h3>Nie posiadasz konta? Zarejestruj się</h3>
+				<form method="POST" action="{% url 'user:registration' %}">
+					{% csrf_token %}
+					{{ register_form.errors }}
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ register_form.username|add_class:"mdl-textfield__input" }}
+						<label class="mdl-textfield__label" for="{{ register_form.username.id_for_label }}">Login...</label>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ register_form.email|add_class:"mdl-textfield__input" }}<!--type=email-->
+						<label class="mdl-textfield__label" for="{{ register_form.email.id_for_label }}">Email...</label>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ register_form.password1|add_class:"mdl-textfield__input" }}
+						<label class="mdl-textfield__label" for="{{ register_form.password1.id_for_label }}">Hasło...</label>
+					</div>
+					<div id="pass-repeat" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						{{ register_form.password2|add_class:"mdl-textfield__input" }}
+						<label class="mdl-textfield__label" for="{{ register_form.password2.id_for_label }}">Powtórz hasło...</label>
+					</div>
+					<br>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">
+					Zarejestruj
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</main>
+<script>
+	//https://github.com/google/material-design-lite/issues/1502
+	let requiredComponents = document.querySelectorAll("[required]");
+	requiredComponents.forEach(function(e){
+		e.removeAttribute('required');
+	})
+	// when submit button click, add required attribute back
+	document.getElementById("submit-button").addEventListener("click", function(){
+		requiredComponents.forEach(function(e){
+			e.setAttribute('required', true)
+		})
+	});
+	// also when form submit event
+	document.getElementById("form-id").addEventListener("submit", function(){
+		requiredComponents.forEach(function(e){
+			e.setAttribute('required', true)
+		})
+	});
+</script>
+{% endblock %}

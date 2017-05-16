@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import *
@@ -13,7 +14,7 @@ def welcome(request, register_form=None, login_form=None):
     if login_form is None:
         login_form = LoginForm()
 
-    return render(request, "not_logged_welcome.html", {'login_form': login_form, 'register_form': register_form})
+    return render(request, "welcome.html", {'login_form': login_form, 'register_form': register_form})
 
 
 def register(request):
